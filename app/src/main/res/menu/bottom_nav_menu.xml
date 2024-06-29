@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/listarItem"
+        android:icon="@drawable/nav_listar"
+        android:title="Listar" />
+    <item
+        android:id="@+id/FavItem"
+        android:icon="@drawable/nav_fav"
+        android:title="Favoritos" />
+    <item
+        android:id="@+id/NoFavItem"
+        android:icon="@drawable/nav_no_fav"
+        android:title="No favoritos" />
+</menu>
