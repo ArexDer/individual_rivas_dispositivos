@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/favoritesFragment"
-        android:name="com.rivas.diego.proyectorivas.ui.fragments.RegisterFragment"
+        android:name="com.rivas.diego.proyectorivas.ui.fragments.login.RegisterFragment"
         android:label="fragment_favorites"
         tools:layout="@layout/fingerprint_dialog_layout" >
         <action
