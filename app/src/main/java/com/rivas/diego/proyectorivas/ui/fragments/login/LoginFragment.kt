@@ -1,4 +1,4 @@
-package com.rivas.diego.proyectorivas.ui.fragments
+package com.rivas.diego.proyectorivas.ui.fragments.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -112,6 +112,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun initListeners() {
+        /*
         binding.btnLogin.setOnClickListener {
 
             val loginUserCase = LoginUserpasswordUserCase(
@@ -148,6 +149,8 @@ class LoginFragment : Fragment() {
             binding.lytLoading.root.visibility = View.GONE
         }
 
+         */
+
         binding.btnSigIn.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment3_to_registerFragment)
         }
@@ -155,5 +158,6 @@ class LoginFragment : Fragment() {
         binding.imgFinger.setOnClickListener {
             initBiometric()
         }
+
     }
 }

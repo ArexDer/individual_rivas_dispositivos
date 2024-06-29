@@ -7,16 +7,32 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.rivas.diego.proyectorivas.ui.fragments.LoginFragment"
+        android:name="com.rivas.diego.proyectorivas.ui.fragments.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_loginFragment3_to_registerFragment"
             app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_recoveyFragment"
+            app:destination="@id/recoveyFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.rivas.diego.proyectorivas.ui.fragments.RegisterFragment"
+        android:name="com.rivas.diego.proyectorivas.ui.fragments.login.RegisterFragment"
         android:label="fragment_register"
-        tools:layout="@layout/fragment_register" />
+        tools:layout="@layout/fragment_register" >
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recoveyFragment"
+        android:name="com.rivas.diego.proyectorivas.ui.fragments.login.RecoveyFragment"
+        android:label="fragment_recovey"
+        tools:layout="@layout/fragment_recovey" >
+        <action
+            android:id="@+id/action_recoveyFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+    </fragment>
 </navigation>

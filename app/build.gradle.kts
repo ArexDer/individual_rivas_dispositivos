@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
 
     //añadidos
+    //Volverlo a pasar a TOM
     id("com.google.devtools.ksp")
 
     id("androidx.navigation.safeargs.kotlin")
@@ -56,39 +57,39 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
 
-        //añadidos y pasarlos al TOM
+    //añadidos y pasarlos al TOM
 
+    implementation(libs.bundles.retrofit)
+    implementation(libs.coil)
+    implementation(libs.lottieLib)
 
-            implementation(libs.bundles.retrofit)
-            implementation(libs.coil)
-            implementation(libs.lottieLib)
+    // RecyclerView
+    implementation(libs.swiperefreshlayout)
+    implementation(libs.coordinatorlayout)
 
-            // RecyclerView
-            implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-            implementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
+    // Room
+    implementation(libs.room.runtime)
+    annotationProcessor(libs.room.compiler)
+    ksp(libs.room.compiler.ksp)
 
-            // Room
-            implementation("androidx.room:room-runtime:2.6.1")
-            annotationProcessor("androidx.room:room-compiler:2.6.1")
-            ksp("androidx.room:room-compiler:2.6.1")
+    //Biometric
+    implementation("androidx.biometric:biometric:1.1.0")
 
-            implementation("androidx.biometric:biometric:1.1.0")
+    // SplashScreen
+    implementation("androidx.core:core-splashscreen:1.0.1")
 
-            // SplashScreen
-            implementation("androidx.core:core-splashscreen:1.0.1")
+    // DataStore
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
 
-            // DataStore
-            implementation("androidx.datastore:datastore-preferences:1.1.1")
+    //Navigation Components
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
 
-            //Navigation Components
-            implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
-            implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
-
-            // Fragment, activity viewmodel
-            implementation("androidx.fragment:fragment-ktx:1.8.0")
-            implementation("androidx.activity:activity-ktx:1.9.0")
-            // ViewModel
-            implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.2")
-            // LiveData
-            implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.2")
+    // Fragment, activity viewmodel
+    implementation("androidx.fragment:fragment-ktx:1.8.0")
+    implementation("androidx.activity:activity-ktx:1.9.0")
+    // ViewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.2")
+    // LiveData
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.2")
 }
