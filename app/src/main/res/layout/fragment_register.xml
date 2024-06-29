@@ -7,15 +7,16 @@
     android:layout_height="match_parent"
     android:background="@color/purple"
     android:orientation="vertical"
-    tools:context=".ui.fragments.RegisterFragment">
+    tools:context=".ui.fragments.login.RegisterFragment">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="42dp"
+        android:background="@color/celeste"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:background="@color/celeste"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,9 +55,22 @@
             android:text="Guardar" />
     </LinearLayout>
 
+
+    <Button
+        android:id="@+id/btnreverse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="regresar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        tools:ignore="MissingConstraints" />
+
     <include
         android:id="@+id/lytLoading"
         layout="@layout/loading_layout"
         android:visibility="invisible" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

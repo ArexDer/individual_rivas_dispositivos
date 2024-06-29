@@ -3,34 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_graph"
-    app:startDestination="@id/favoritesFragment">
+    app:startDestination="@id/listarMoviesPopularityFragment">
 
     <fragment
-        android:id="@+id/favoritesFragment"
-        android:name="com.rivas.diego.proyectorivas.ui.fragments.RegisterFragment"
-        android:label="fragment_favorites"
-        tools:layout="@layout/fingerprint_dialog_layout" >
-        <action
-            android:id="@+id/action_favoritesFragment_to_modificarFragment"
-            app:destination="@id/modificarFragment" />
-        <action
-            android:id="@+id/action_favoritesFragment_to_modificarFragment2"
-            app:destination="@id/modificarFragment"
-            app:enterAnim="@anim/nav_default_enter_anim" />
-        <action
-            android:id="@+id/action_favoritesFragment_to_modificarFragment3"
-            app:destination="@id/modificarFragment" />
-        <action
-            android:id="@+id/action_favoritesFragment_to_modificarFragment4"
-            app:destination="@id/modificarFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/modificarFragment"
-        android:name="com.rivas.diego.proyectorivas.ui.fragments.ModificarFragment"
-        android:label="fragment_modificar"
-        tools:layout="@layout/fragment_modificar" >
-        <argument
-            android:name="name"
-            app:argType="string" />
-    </fragment>
+        android:id="@+id/listarMoviesPopularityFragment"
+        android:name="com.rivas.diego.proyectorivas.ui.fragments.main.ListarMoviesPopularityFragment"
+        android:label="fragment_listar_movies_popularity"
+        tools:layout="@layout/fragment_listar_movies_popularity" />
 </navigation>

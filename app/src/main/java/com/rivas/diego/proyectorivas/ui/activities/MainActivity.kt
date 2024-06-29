@@ -1,13 +1,11 @@
-package com.rivas.diego.proyectorivas
+package com.rivas.diego.proyectorivas.ui.activities
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.rivas.diego.proyectorivas.R
 import com.rivas.diego.proyectorivas.databinding.ActivityMainBinding
-import com.rivas.diego.proyectorivas.ui.fragments.LoginFragment
+import com.rivas.diego.proyectorivas.ui.fragments.login.LoginFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -21,6 +19,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+        /*
+
         splash.setKeepOnScreenCondition { false }
 
         if (savedInstanceState == null) {
@@ -28,5 +29,9 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.fragment_container, LoginFragment())
                 .commit()
         }
+
+         */
+
+
     }
 }

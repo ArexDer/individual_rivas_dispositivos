@@ -1,4 +1,4 @@
-package com.rivas.diego.proyectorivas.ui.fragments
+package com.rivas.diego.proyectorivas.ui.fragments.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,23 +6,21 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.rivas.diego.proyectorivas.R
+import com.rivas.diego.proyectorivas.data.local.repository.DataBaseRepository
 import com.rivas.diego.proyectorivas.databinding.FragmentLoginBinding
-import com.rivas.diego.proyectorivas.logic.usercase.login.LoginUserpasswordUserCase
-import com.rivas.diego.proyectorivas.ui.activities.ConstrainActivity
-import com.rivas.diego.proyectorivas.ui.core.MyApplication
-
-import kotlinx.coroutines.Dispatchers
+import com.rivas.diego.proyectorivas.ui.activities.MainActivity
+import com.rivas.diego.proyectorivas.ui.core.ManageUIStates
+import com.rivas.diego.proyectorivas.ui.viewmodels.login.LoginFragmentVM
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+
 import java.util.concurrent.Executor
 
 class LoginFragment : Fragment() {
@@ -33,6 +31,11 @@ class LoginFragment : Fragment() {
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
     private lateinit var biometricManager: BiometricManager
 
+    //NUEVAS...
+    private lateinit var con: DataBaseRepository
+    private lateinit var managerUIStates: ManageUIStates
+    private val loginFragmentVM:LoginFragmentVM by viewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,11 +45,40 @@ class LoginFragment : Fragment() {
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initVariables()
+      //  initVariables()
         initListeners()
+
+        //NUEVAS
+        initiObservers()
+        initVariables()
+    }
+
+    private fun initVariables() {
+
+        managerUIStates= ManageUIStates(requireActivity(),binding.lytLoading.mainLayout)
+
+    }
+
+    private fun initiObservers() {
+
+        loginFragmentVM.uiState.observe(viewLifecycleOwner){
+            states->managerUIStates.invoke(states)
+        }
+
+        loginFragmentVM.idUser.observe(viewLifecycleOwner) { id ->
+
+            startActivity(
+                Intent(
+                    requireActivity(),
+                    MainActivity::class.java
+                )
+            )
+            requireActivity().finish()
+        }
 
     }
 
@@ -85,6 +117,12 @@ class LoginFragment : Fragment() {
         }
     }
 
+
+
+
+
+
+/*
     private fun initVariables() {
         biometricManager = BiometricManager.from(requireActivity())
         executor = ContextCompat.getMainExecutor(requireActivity())
@@ -111,7 +149,37 @@ class LoginFragment : Fragment() {
         )
     }
 
+ */
+
     private fun initListeners() {
+
+        binding.btnSigIn.setOnClickListener {
+            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+           // findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment())
+        }
+
+        binding.imgFinger.setOnClickListener {
+            initBiometric()
+        }
+
+        binding.btnLogin.setOnClickListener {
+            val username = binding.etxtUser.text.toString()
+            val password = binding.etxtPassword.text.toString()
+
+            lifecycleScope.launch {
+                loginFragmentVM.getUserFromDB(username, password, requireContext())
+            }
+        }
+        /*
+        binding.btnLogin.setOnClickListener{
+            findNavController().navigate(R.id.action_loginFragment_to_recoveyFragment)
+
+l
+        }
+
+         */
+
+        /*
         binding.btnLogin.setOnClickListener {
 
             val loginUserCase = LoginUserpasswordUserCase(
@@ -148,12 +216,8 @@ class LoginFragment : Fragment() {
             binding.lytLoading.root.visibility = View.GONE
         }
 
-        binding.btnSigIn.setOnClickListener {
-            findNavController().navigate(R.id.action_loginFragment3_to_registerFragment)
-        }
+         */
 
-        binding.imgFinger.setOnClickListener {
-            initBiometric()
-        }
+
     }
 }
