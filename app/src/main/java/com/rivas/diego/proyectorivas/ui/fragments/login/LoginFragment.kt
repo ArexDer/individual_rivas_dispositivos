@@ -1,4 +1,4 @@
-package com.rivas.diego.proyectorivas.ui.fragments
+package com.rivas.diego.proyectorivas.ui.fragments.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,23 +6,14 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.rivas.diego.proyectorivas.R
 import com.rivas.diego.proyectorivas.databinding.FragmentLoginBinding
-import com.rivas.diego.proyectorivas.logic.usercase.login.LoginUserpasswordUserCase
-import com.rivas.diego.proyectorivas.ui.activities.ConstrainActivity
-import com.rivas.diego.proyectorivas.ui.core.MyApplication
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.concurrent.Executor
 
 class LoginFragment : Fragment() {
@@ -45,9 +36,8 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initVariables()
+      //  initVariables()
         initListeners()
-
     }
 
     private fun initBiometric() {
@@ -85,6 +75,7 @@ class LoginFragment : Fragment() {
         }
     }
 
+/*
     private fun initVariables() {
         biometricManager = BiometricManager.from(requireActivity())
         executor = ContextCompat.getMainExecutor(requireActivity())
@@ -111,7 +102,10 @@ class LoginFragment : Fragment() {
         )
     }
 
+ */
+
     private fun initListeners() {
+        /*
         binding.btnLogin.setOnClickListener {
 
             val loginUserCase = LoginUserpasswordUserCase(
@@ -148,12 +142,22 @@ class LoginFragment : Fragment() {
             binding.lytLoading.root.visibility = View.GONE
         }
 
+         */
+
         binding.btnSigIn.setOnClickListener {
-            findNavController().navigate(R.id.action_loginFragment3_to_registerFragment)
+            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+           // findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment())
         }
 
         binding.imgFinger.setOnClickListener {
             initBiometric()
         }
+        binding.btnLogin.setOnClickListener{
+            findNavController().navigate(R.id.action_loginFragment_to_recoveyFragment)
+
+
+        }
+
+
     }
 }

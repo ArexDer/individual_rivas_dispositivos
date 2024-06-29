@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/login_background"
-    tools:context=".MainActivity">
+    tools:context=".ui.fragments.login.LoginFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/cinta_login" />
+            android:src="@drawable/cinta_login_sn" />
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -134,7 +134,7 @@
                 android:id="@+id/btnSigIn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="No tienes cuenta Registreta"
+                android:text="No tienes cuenta Registrate"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="90dp"

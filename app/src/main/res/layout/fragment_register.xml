@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/purple"
     android:orientation="vertical"
-    tools:context=".ui.fragments.RegisterFragment">
+    tools:context=".ui.fragments.login.RegisterFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -58,5 +58,14 @@
         android:id="@+id/lytLoading"
         layout="@layout/loading_layout"
         android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/btnreverse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="regresar"
+        tools:layout_editor_absoluteX="171dp"
+        tools:layout_editor_absoluteY="599dp"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

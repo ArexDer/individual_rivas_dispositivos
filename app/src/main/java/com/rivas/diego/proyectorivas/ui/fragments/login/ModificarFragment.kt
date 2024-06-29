@@ -1,4 +1,4 @@
-package com.rivas.diego.proyectorivas.ui.fragments
+package com.rivas.diego.proyectorivas.ui.fragments.login
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -14,7 +14,7 @@ import com.rivas.diego.proyectorivas.ui.viewmodels.ModificarFragmentVM
 
 
 class ModificarFragment : Fragment() {
-
+/*
 
     private  lateinit var binding: FragmentModificarBinding
     //DELEGADO
@@ -63,6 +63,8 @@ class ModificarFragment : Fragment() {
     }
 
 
+
+ */
 
 
 }
