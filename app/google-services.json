@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1023146080515",
+    "project_id": "final-proyect-7d6a1",
+    "storage_bucket": "final-proyect-7d6a1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1023146080515:android:800e381bf4020825e45136",
+        "android_client_info": {
+          "package_name": "com.rivas.diego.proyectorivas"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrTO5J7yHo7cRSZ1U3PADTGJ4ToApJv8o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

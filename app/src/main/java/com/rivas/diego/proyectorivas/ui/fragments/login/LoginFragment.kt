@@ -13,6 +13,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.rivas.diego.proyectorivas.R
 import com.rivas.diego.proyectorivas.data.local.repository.DataBaseRepository
 import com.rivas.diego.proyectorivas.databinding.FragmentLoginBinding
@@ -35,6 +38,9 @@ class LoginFragment : Fragment() {
     private lateinit var con: DataBaseRepository
     private lateinit var managerUIStates: ManageUIStates
     private val loginFragmentVM:LoginFragmentVM by viewModels()
+
+    //FIREBASE
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,7 +65,18 @@ class LoginFragment : Fragment() {
 
     private fun initVariables() {
 
+        // Initialize Firebase Auth
+        auth=Firebase.auth
+
+
         managerUIStates= ManageUIStates(requireActivity(),binding.lytLoading.mainLayout)
+
+        // Check if user is signed in (non-null) and update UI accordingly.
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            startActivity(Intent(requireActivity(),MainActivity::class.java))
+            //Si esta Logeado va directamente a la Main Activity, caso contrario se queda aqui
+        }
 
     }
 
@@ -119,9 +136,6 @@ class LoginFragment : Fragment() {
 
 
 
-
-
-
 /*
     private fun initVariables() {
         biometricManager = BiometricManager.from(requireActivity())
@@ -161,6 +175,8 @@ class LoginFragment : Fragment() {
         binding.imgFinger.setOnClickListener {
             initBiometric()
         }
+
+        //Aqui hacerle el cambio para ver los datos de el usuario., hasta borrarlol.
 
         binding.btnLogin.setOnClickListener {
             val username = binding.etxtUser.text.toString()

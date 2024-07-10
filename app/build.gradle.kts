@@ -7,6 +7,10 @@ plugins {
     id("com.google.devtools.ksp")
 
     id("androidx.navigation.safeargs.kotlin")
+
+    //FIREBASE
+   // id("com.android.application")   --> Ya no necesitamos porque ya esta arriba
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -92,4 +96,10 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.2")
     // LiveData
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.2")
+
+
+    //Import FIREBASE BoM    SDK
+    implementation(platform("com.google.firebase:firebase-bom:33.1.1"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth-ktx")
 }
