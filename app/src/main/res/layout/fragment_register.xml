@@ -34,14 +34,14 @@
             android:textSize="28sp" />
 
         <EditText
-            android:id="@+id/etxtUser"
+            android:id="@+id/txtEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:hint="Email" />
 
         <EditText
-            android:id="@+id/etxtPass"
+            android:id="@+id/txtPass"
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

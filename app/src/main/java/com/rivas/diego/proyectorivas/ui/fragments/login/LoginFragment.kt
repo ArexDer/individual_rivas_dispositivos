@@ -3,9 +3,11 @@ package com.rivas.diego.proyectorivas.ui.fragments.login
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.fragment.app.Fragment
@@ -13,14 +15,17 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.auth.auth
+
+
 import com.rivas.diego.proyectorivas.R
 import com.rivas.diego.proyectorivas.data.local.repository.DataBaseRepository
 import com.rivas.diego.proyectorivas.databinding.FragmentLoginBinding
 import com.rivas.diego.proyectorivas.ui.activities.MainActivity
 import com.rivas.diego.proyectorivas.ui.core.ManageUIStates
+import com.rivas.diego.proyectorivas.ui.core.UIStates
 import com.rivas.diego.proyectorivas.ui.viewmodels.login.LoginFragmentVM
 import kotlinx.coroutines.launch
 
@@ -66,17 +71,17 @@ class LoginFragment : Fragment() {
     private fun initVariables() {
 
         // Initialize Firebase Auth
-        auth=Firebase.auth
+        auth= Firebase.auth
 
 
         managerUIStates= ManageUIStates(requireActivity(),binding.lytLoading.mainLayout)
 
         // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
-            startActivity(Intent(requireActivity(),MainActivity::class.java))
-            //Si esta Logeado va directamente a la Main Activity, caso contrario se queda aqui
-        }
+//        val currentUser = auth.currentUser
+//        if (currentUser != null) {
+//            startActivity(Intent(requireActivity(),MainActivity::class.java))
+//            //Si esta Logeado va directamente a la Main Activity, caso contrario se queda aqui
+//        }
 
     }
 
@@ -179,12 +184,34 @@ class LoginFragment : Fragment() {
         //Aqui hacerle el cambio para ver los datos de el usuario., hasta borrarlol.
 
         binding.btnLogin.setOnClickListener {
-            val username = binding.etxtUser.text.toString()
-            val password = binding.etxtPassword.text.toString()
 
-            lifecycleScope.launch {
-                loginFragmentVM.getUserFromDB(username, password, requireContext())
-            }
+            auth.signInWithEmailAndPassword(
+                binding.etxtUser.text.toString(),
+                binding.etxtPassword.text.toString())
+                .addOnCompleteListener(requireActivity()) { task ->
+                    if (task.isSuccessful) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d("TAG", "signInWithEmail:success")
+                        val user = auth.currentUser
+                        //user.zza()    manejo de Errores con el DEBUG
+
+                        startActivity(Intent(requireActivity(), MainActivity::class.java))
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w("TAG", "signInWithEmail:failure", task.exception)
+
+                        managerUIStates.invoke(UIStates.Error(
+                            task.exception?.message.toString()
+                            )
+                        )
+//                        Toast.makeText(
+//                            requireActivity(),
+//                            task.exception?.message.toString(),
+//                            Toast.LENGTH_SHORT,
+//                        ).show()
+
+                    }
+                }
         }
         /*
         binding.btnLogin.setOnClickListener{
@@ -235,5 +262,14 @@ l
          */
 
 
+    }
+
+    private fun LoginLocal() {
+        val username = binding.etxtUser.text.toString()
+        val password = binding.etxtPassword.text.toString()
+
+        lifecycleScope.launch {
+            loginFragmentVM.getUserFromDB(username, password, requireContext())
+        }
     }
 }

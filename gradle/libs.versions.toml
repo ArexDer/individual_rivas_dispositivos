@@ -20,6 +20,7 @@ swiperefreshlayout="1.1.0"
 coordinatorlayout="1.2.0"
 
 room="2.6.1"
+firebaseAuthKtx = "23.0.0"
 
 
 [libraries]
@@ -43,6 +44,7 @@ coordinatorlayout={group="androidx.coordinatorlayout", name="coordinatorlayout",
 room-runtime={group="androidx.room",name="room-runtime",version.ref="room"}
 room-compiler={group="androidx.room",name="room-compiler",version.ref="room"}
 room-compiler-ksp={group="androidx.room",name="room-compiler",version.ref="room"}
+firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
 
 [bundles]
 retrofit = ["retrofit", "retrofit-converter", "corutinas"]
