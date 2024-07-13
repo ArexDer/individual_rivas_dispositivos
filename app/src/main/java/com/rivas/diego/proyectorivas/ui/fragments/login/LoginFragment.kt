@@ -75,6 +75,7 @@ class LoginFragment : Fragment() {
 
 
         managerUIStates= ManageUIStates(requireActivity(),binding.lytLoading.mainLayout)
+        loginFragmentVM.initGlobalVars(auth,requireActivity())
 
         // Check if user is signed in (non-null) and update UI accordingly.
 //        val currentUser = auth.currentUser
@@ -186,32 +187,7 @@ class LoginFragment : Fragment() {
         binding.btnLogin.setOnClickListener {
 
             auth.signInWithEmailAndPassword(
-                binding.etxtUser.text.toString(),
-                binding.etxtPassword.text.toString())
-                .addOnCompleteListener(requireActivity()) { task ->
-                    if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d("TAG", "signInWithEmail:success")
-                        val user = auth.currentUser
-                        //user.zza()    manejo de Errores con el DEBUG
 
-                        startActivity(Intent(requireActivity(), MainActivity::class.java))
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w("TAG", "signInWithEmail:failure", task.exception)
-
-                        managerUIStates.invoke(UIStates.Error(
-                            task.exception?.message.toString()
-                            )
-                        )
-//                        Toast.makeText(
-//                            requireActivity(),
-//                            task.exception?.message.toString(),
-//                            Toast.LENGTH_SHORT,
-//                        ).show()
-
-                    }
-                }
         }
         /*
         binding.btnLogin.setOnClickListener{
