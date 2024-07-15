@@ -75,7 +75,11 @@ class LoginFragment : Fragment() {
 
 
         managerUIStates= ManageUIStates(requireActivity(),binding.lytLoading.mainLayout)
-        loginFragmentVM.initGlobalVars(auth,requireActivity())
+
+       // loginFragmentVM.initGlobalVars(auth,requireActivity())
+
+        //loginFragmentVM.initGlobalVars(auth,requireActivity())
+
 
         // Check if user is signed in (non-null) and update UI accordingly.
 //        val currentUser = auth.currentUser
@@ -88,8 +92,13 @@ class LoginFragment : Fragment() {
 
     private fun initiObservers() {
 
-        loginFragmentVM.uiState.observe(viewLifecycleOwner){
-            states->managerUIStates.invoke(states)
+        loginFragmentVM.uiState.observe(viewLifecycleOwner){state->
+            if(state is UIStates.Success){
+                startActivity(Intent(requireActivity(),MainActivity::class.java))
+            }else{
+                managerUIStates.invoke(state)
+            }
+            //states->managerUIStates.invoke(states)
         }
 
         loginFragmentVM.idUser.observe(viewLifecycleOwner) { id ->
@@ -185,9 +194,9 @@ class LoginFragment : Fragment() {
         //Aqui hacerle el cambio para ver los datos de el usuario., hasta borrarlol.
 
         binding.btnLogin.setOnClickListener {
-
-            auth.signInWithEmailAndPassword(
-
+loginFragmentVM.authWhitFireBase(binding.etxtUser.text.toString(),
+    binding.etxtPassword.text.toString().toString(),auth, requireActivity())
+            //auth.signInWithEmailAndPassword()
         }
         /*
         binding.btnLogin.setOnClickListener{
