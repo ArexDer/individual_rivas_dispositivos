@@ -6,19 +6,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.toObject
-import com.google.firebase.firestore.toObjects
+
 import com.google.firebase.ktx.Firebase
 
 
 import com.rivas.diego.proyectorivas.R
 import com.rivas.diego.proyectorivas.databinding.FragmentSaveFireStoreBinding
+import com.rivas.diego.proyectorivas.ui.core.ManageUIStates
+import com.rivas.diego.proyectorivas.ui.core.UIStates
 import com.rivas.diego.proyectorivas.ui.entities.users.UserLogin
-
+import com.rivas.diego.proyectorivas.ui.viewmodels.login.SaveFireStoreVM
 
 
 class SaveFireStoreFragment : Fragment() {
@@ -27,6 +30,11 @@ class SaveFireStoreFragment : Fragment() {
     private lateinit var db: FirebaseFirestore
     private lateinit var auth:FirebaseAuth
 
+    private lateinit var manageUIState:ManageUIStates
+
+
+    //Hago la referencia al VM
+    private val saveFireStoreVM : SaveFireStoreVM by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,10 +46,28 @@ class SaveFireStoreFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-         db= Firebase.firestore
+        db= Firebase.firestore
         auth=Firebase.auth
 
+        //Inicializo
+        manageUIState = ManageUIStates(requireActivity(),binding.lytLoading.mainLayout)
+
         initListeners()
+        initObservers()
+    }
+
+    private fun initObservers() {
+        saveFireStoreVM.userUI.observe(viewLifecycleOwner){state->
+
+            manageUIState.invoke(state)
+
+        }
+
+        saveFireStoreVM.userUI.observe(viewLifecycleOwner){
+                state-> manageUIState.invoke(state)
+
+
+        }
     }
 
     private fun initListeners() {
@@ -52,37 +78,15 @@ class SaveFireStoreFragment : Fragment() {
                 binding.LastName.text.toString()
             )
 
-// Add a new document with a generated ID
-            db.collection("users")
-                .add(user)
-                .addOnSuccessListener { documentReference ->
-                    Log.d("TAG", "DocumentSnapshot added with ID: ${documentReference.id}")
-                }
-                .addOnFailureListener { e ->
-                    Log.w("TAG", "Error adding document", e)
-                }
+            saveFireStoreVM.saveUserFireStore(user)
+
         }
 
         binding.btnGet.setOnClickListener{
-            db.collection("users")
-                .whereEqualTo("uuid",auth.currentUser!!.uid)//Me devolveria un valor igual al anterior
-                .get()
-                .addOnSuccessListener { result ->
-                    result.forEach{
-                      val s=  it.toObject<UserLogin>() //JSON  de FIREBASE me lo pasa a DATA Class
-                        binding.txtData.text=s.name  //NUEVA FORMA
-                        //binding.txtData.text=it.get("name").toString() //Con el WHERE  ANTIGUA FORMA
-                    }
-                    /*+
-                    for (document in result) {
-                        Log.d("TAG", "${document.id} => ${document.data}")
-                    }
-                    *Cuando euso quitandop el Where
-                     */
-                }
-                .addOnFailureListener { exception ->
-                    Log.w("TAG", "Error getting documents.", exception)
-                }
+
+
+            saveFireStoreVM.getUserByIdFireStore(auth.currentUser!!.uid)
+
         }
     }
 

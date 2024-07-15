@@ -23,7 +23,9 @@ class LoginFragmentVM:ViewModel() {
     private val context: FragmentActivity?= null
 
     var uiState = MutableLiveData<UIStates>()
-    var idUser =MutableLiveData<String>()
+    var idUser =MutableLiveData<Int>()
+
+
 
 
 
@@ -46,6 +48,7 @@ class LoginFragmentVM:ViewModel() {
             uiState.postValue(UIStates.Loading(false))
         }
     }
+
 
 
 
