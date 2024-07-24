@@ -1,8 +1,6 @@
 package com.rivas.diego.proyectorivas.ui.viewmodels.login
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.util.Log
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +8,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.rivas.diego.proyectorivas.logic.usercase.login.GetUserWithNameAndPassword
-import com.rivas.diego.proyectorivas.ui.activities.MainActivity
 import com.rivas.diego.proyectorivas.ui.core.UIStates
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
@@ -26,10 +23,6 @@ class LoginFragmentVM:ViewModel() {
     var idUser =MutableLiveData<Int>()
 
 
-
-
-
-
     fun getUserFromDB(name:String, password:String, contex: Context){
         viewModelScope.launch {
             uiState.postValue(UIStates.Loading(true))
@@ -43,7 +36,7 @@ class LoginFragmentVM:ViewModel() {
                         uiState.postValue(UIStates.Error(it.message.toString()))
                     }
 
-            }
+                }
             delay(3000)
             uiState.postValue(UIStates.Loading(false))
         }
@@ -56,14 +49,14 @@ class LoginFragmentVM:ViewModel() {
         viewModelScope.launch {
             uiState.postValue(UIStates.Loading(true))
             auth.signInWithEmailAndPassword(email,password).
-                    addOnCompleteListener(context){task->
-                        if(task.isSuccessful){
-                            uiState.postValue(UIStates.Success(true))
-                        }else{
-                            Log.w("TAG","Error al entrar con correo", task.exception)
-                            uiState.postValue(UIStates.Error(task.exception?.message.toString()))
-                        }
-                    }
+            addOnCompleteListener(context){task->
+                if(task.isSuccessful){
+                    uiState.postValue(UIStates.Success(true))
+                }else{
+                    Log.w("TAG","Error al entrar con correo", task.exception)
+                    uiState.postValue(UIStates.Error(task.exception?.message.toString()))
+                }
+            }
             delay(500)
             uiState.postValue(UIStates.Loading(false))
         }

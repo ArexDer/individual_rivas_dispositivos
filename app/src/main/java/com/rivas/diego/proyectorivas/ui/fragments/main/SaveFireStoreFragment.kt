@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -63,8 +64,10 @@ class SaveFireStoreFragment : Fragment() {
 
         }
 
-        saveFireStoreVM.userUI.observe(viewLifecycleOwner){
-                state-> manageUIState.invoke(state)
+        saveFireStoreVM.userLogin.observe(viewLifecycleOwner){
+                binding.txtData.text=it.uuid
+           //   binding.txtData.text=it.name
+            //  binding.txtData.text=it.lastName
 
 
         }
@@ -81,14 +84,10 @@ class SaveFireStoreFragment : Fragment() {
             saveFireStoreVM.saveUserFireStore(user)
 
         }
-
         binding.btnGet.setOnClickListener{
-
-
             saveFireStoreVM.getUserByIdFireStore(auth.currentUser!!.uid)
 
         }
+
     }
-
-
 }

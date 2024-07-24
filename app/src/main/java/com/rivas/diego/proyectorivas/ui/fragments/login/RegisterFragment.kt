@@ -1,6 +1,5 @@
 package com.rivas.diego.proyectorivas.ui.fragments.login
 
-
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,10 +12,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.rivas.diego.proyectorivas.R
-import com.rivas.diego.proyectorivas.data.local.repository.DataBaseRepository
 import com.rivas.diego.proyectorivas.databinding.FragmentRegisterBinding
-import com.rivas.diego.proyectorivas.logic.usercase.login.CreateUserWithNameAndPassword
 import com.rivas.diego.proyectorivas.ui.core.ManageUIStates
 import com.rivas.diego.proyectorivas.ui.viewmodels.login.RegisterFragmentVM
 import kotlinx.coroutines.Dispatchers
@@ -25,12 +23,10 @@ import kotlinx.coroutines.launch
 class RegisterFragment : Fragment() {
 
     private lateinit var binding: FragmentRegisterBinding
-
     private val registerFragmentVM: RegisterFragmentVM by viewModels()
-
     private lateinit var managerUIStates: ManageUIStates
-
     private lateinit var auth: FirebaseAuth
+    private val firestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -73,39 +69,35 @@ class RegisterFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            Log.d("TAG", "Email: $email, Password: $password")
-
-            auth.createUserWithEmailAndPassword(binding.txtEmail.text.toString().trim(), binding.txtPass.text.toString().trim())
+            auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(requireActivity()) { task ->
                     if (task.isSuccessful) {
-                        Log.d("TAG", "signInWithEmail:success")
                         val user = auth.currentUser
-                        // Continúa con el flujo de tu aplicación
+                        saveUserToFirestore()
                     } else {
-                        Log.d("TAG", "signInWithEmail:failure", task.exception)
                         Toast.makeText(requireActivity(), task.exception?.message.toString(), Toast.LENGTH_SHORT).show()
                     }
                 }
         }
     }
 
-    private fun createLocalUser() {
-        MaterialAlertDialogBuilder(requireActivity())
-            .setTitle("Informacion")
-            .setMessage("Seguro de que desea guardar la informacion proporcionada?")
-            .setPositiveButton("Si") { dialog, id ->
-                binding.btnSave.setOnClickListener {
-                    registerFragmentVM.saveUser(
-                        binding.txtEmail.text.toString().trim(),
-                        binding.txtPass.text.toString().trim(),
-                        requireContext()
-                    )
-                    dialog.dismiss()
-                }
+    private fun saveUserToFirestore() {
+        val user = auth.currentUser ?: return
+        val userData = hashMapOf(
+            "firstName" to binding.txtFirstName.text.toString().trim(),
+            "lastName" to binding.txtLastName.text.toString().trim(),
+            "age" to binding.txtAge.text.toString().trim(),
+            "nickname" to binding.txtNickname.text.toString().trim(),
+            "email" to binding.txtEmail.text.toString().trim()
+        )
+
+        firestore.collection("users").document(user.uid).set(userData)
+            .addOnSuccessListener {
+                Toast.makeText(requireActivity(), "Usuario registrado correctamente", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment())
             }
-            .setNegativeButton("No") { dialog, id ->
-                dialog.cancel()
+            .addOnFailureListener { e ->
+                Toast.makeText(requireActivity(), e.message.toString(), Toast.LENGTH_SHORT).show()
             }
-            .show()
     }
 }

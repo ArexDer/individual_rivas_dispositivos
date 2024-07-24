@@ -19,9 +19,7 @@ class ListarMoviesPopularityAdapter:
 
             fun render(item: MoviesInfoUI){
                 binding.imageView.load("https://image.tmdb.org/t/p/w500"+item.poster_path)
-                binding.titulo.text=item.title
-                binding.titutloOriginal.text=item.original_title
-                binding.idioma.text=item.original_language
+
             }
         }
 

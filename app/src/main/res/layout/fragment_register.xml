@@ -5,56 +5,104 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/purple"
+    android:background="@drawable/login_background"
     android:orientation="vertical"
     tools:context=".ui.fragments.login.RegisterFragment">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/my_primary"
+        android:alpha="0.7">
+
+    </RelativeLayout>
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="42dp"
-        android:background="@color/celeste"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
+        app:cardCornerRadius="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="48dp"
-            android:fontFamily="sans-serif"
-            android:gravity="center"
-            android:text="Registrate ...!"
-            android:textColor="@color/white"
-            android:textSize="28sp" />
+        >
 
-        <EditText
-            android:id="@+id/txtEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
-            android:hint="Email" />
-
-        <EditText
-            android:id="@+id/txtPass"
+        <LinearLayout
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="48dp"
-            android:hint="Password" />
+            android:orientation="vertical"
+            android:padding="16dp"
+            >
 
-        <Button
-            android:id="@+id/btnSave"
-            android:layout_width="match_parent"
-            android:layout_height="62dp"
-            android:text="Guardar" />
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:text="Registrate ...!"
+                android:textColor="@color/black"
+                android:textSize="28sp" />
+
+            <EditText
+                android:id="@+id/txtFirstName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nombres" />
+
+            <EditText
+                android:id="@+id/txtLastName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="Apellidos" />
+
+            <EditText
+                android:id="@+id/txtAge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:inputType="number"
+                android:hint="Edad" />
+
+            <EditText
+                android:id="@+id/txtNickname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="Nickname" />
+
+            <EditText
+                android:id="@+id/txtEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:inputType="textEmailAddress"
+                android:hint="Email" />
+
+            <EditText
+                android:id="@+id/txtPass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="24dp"
+                android:hint="Password" />
+
+            <Button
+                android:id="@+id/btnSave"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Guardar" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
 
 
     <Button
@@ -62,16 +110,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="regresar"
+        android:drawableStart="@drawable/flechaback"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/cardView"
         tools:ignore="MissingConstraints" />
 
     <include
         android:id="@+id/lytLoading"
         layout="@layout/loading_layout"
         android:visibility="invisible" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

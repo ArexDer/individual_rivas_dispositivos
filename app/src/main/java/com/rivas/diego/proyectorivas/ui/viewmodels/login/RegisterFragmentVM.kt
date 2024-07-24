@@ -14,35 +14,22 @@ import kotlinx.coroutines.launch
 
 class RegisterFragmentVM: ViewModel() {
 
+    var uiState = MutableLiveData<UIStates>()
 
-    //AQUI PUEDO MANEJAR OCN UN SOLO ESTADO.
-    var uiState= MutableLiveData<UIStates>()
-
-     fun saveUser(name:String, password:String, context: Context){
-
-       viewModelScope.launch {
-
-           //Este estado esta cargando antes.
-           uiState.postValue(UIStates.Loading(true))
-           CreateUserWithNameAndPassword(context).invoke(name,password)
-               .collect{
-                   it.onSuccess{
-                       uiState.postValue(UIStates.Success(it))
-                   }
-                   it.onFailure{
+    fun saveUser(name: String, password: String, context: Context) {
+        viewModelScope.launch {
+            uiState.postValue(UIStates.Loading(true))
+            CreateUserWithNameAndPassword(context).invoke(name, password)
+                .collect {
+                    it.onSuccess {
+                        uiState.postValue(UIStates.Success(it))
+                    }
+                    it.onFailure {
                         uiState.postValue(UIStates.Error(it.message.toString()))
-                   }
-               }
-           //Cuando ya esta cargado me cambia a False.
-           delay(500)
-           uiState.postValue(UIStates.Loading(false))
-       }
+                    }
+                }
+            delay(500)
+            uiState.postValue(UIStates.Loading(false))
+        }
     }
-
 }
-
-
-//SINGLE CLASS
-
-   //Una clase normal, que tiene clase y objetos que me permiten ocmprobar, sino
-   //Son Exaustivo -> Si o si se tiene que usar en todo lo que tenga alli

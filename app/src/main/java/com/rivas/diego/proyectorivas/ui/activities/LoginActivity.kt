@@ -5,8 +5,10 @@ import android.util.Log
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.rivas.diego.proyectorivas.R
 
 import com.rivas.diego.proyectorivas.databinding.ActivityLoginBinding
+
 
 class LoginActivity : AppCompatActivity() {
 

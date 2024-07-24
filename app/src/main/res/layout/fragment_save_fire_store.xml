@@ -18,11 +18,13 @@
 
         <EditText
             android:id="@+id/Name"
+            android:hint="Nombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <EditText
             android:id="@+id/LastName"
+            android:hint="Apellido"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -45,6 +47,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:text="Obtener" />
+
+        <Button
+            android:id="@+id/btnSiguiente"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Siguiente" />
     </LinearLayout>
 
     <include

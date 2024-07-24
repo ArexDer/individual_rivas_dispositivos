@@ -1,8 +1,11 @@
 package com.rivas.diego.proyectorivas.ui.fragments.login
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.provider.Settings
+import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,20 +18,15 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
-
-
+import com.google.firebase.firestore.FirebaseFirestore
 import com.rivas.diego.proyectorivas.R
-import com.rivas.diego.proyectorivas.data.local.repository.DataBaseRepository
 import com.rivas.diego.proyectorivas.databinding.FragmentLoginBinding
 import com.rivas.diego.proyectorivas.ui.activities.MainActivity
 import com.rivas.diego.proyectorivas.ui.core.ManageUIStates
 import com.rivas.diego.proyectorivas.ui.core.UIStates
 import com.rivas.diego.proyectorivas.ui.viewmodels.login.LoginFragmentVM
 import kotlinx.coroutines.launch
-
 import java.util.concurrent.Executor
 
 class LoginFragment : Fragment() {
@@ -38,223 +36,178 @@ class LoginFragment : Fragment() {
     private lateinit var biometricPrompt: BiometricPrompt
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
     private lateinit var biometricManager: BiometricManager
-
-    //NUEVAS...
-    private lateinit var con: DataBaseRepository
     private lateinit var managerUIStates: ManageUIStates
-    private val loginFragmentVM:LoginFragmentVM by viewModels()
-
-    //FIREBASE
+    private val loginFragmentVM: LoginFragmentVM by viewModels()
     private lateinit var auth: FirebaseAuth
+
+    // PARA GUARDAR MIS CREDENCIALES
+    private lateinit var sharedPreferences: SharedPreferences
+    private val sharedPreferencesEditor: SharedPreferences.Editor by lazy {
+        sharedPreferences.edit()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding =
-            FragmentLoginBinding.bind(inflater.inflate(R.layout.fragment_login, container, false))
+        binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-      //  initVariables()
-        initListeners()
-
-        //NUEVAS
-        initiObservers()
         initVariables()
+        initListeners()
+        initiObservers()
     }
 
     private fun initVariables() {
-
-        // Initialize Firebase Auth
-        auth= Firebase.auth
-
-
-        managerUIStates= ManageUIStates(requireActivity(),binding.lytLoading.mainLayout)
-
-       // loginFragmentVM.initGlobalVars(auth,requireActivity())
-
-        //loginFragmentVM.initGlobalVars(auth,requireActivity())
-
-
-        // Check if user is signed in (non-null) and update UI accordingly.
-//        val currentUser = auth.currentUser
-//        if (currentUser != null) {
-//            startActivity(Intent(requireActivity(),MainActivity::class.java))
-//            //Si esta Logeado va directamente a la Main Activity, caso contrario se queda aqui
-//        }
-
+        auth = FirebaseAuth.getInstance()
+        managerUIStates = ManageUIStates(requireActivity(), binding.lytLoading.mainLayout)
+        // Inicializa SharedPreferences
+        sharedPreferences = requireContext().getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
     }
 
     private fun initiObservers() {
-
-        loginFragmentVM.uiState.observe(viewLifecycleOwner){state->
-            if(state is UIStates.Success){
-                startActivity(Intent(requireActivity(),MainActivity::class.java))
-            }else{
-                managerUIStates.invoke(state)
-            }
-            //states->managerUIStates.invoke(states)
-        }
-
-        loginFragmentVM.idUser.observe(viewLifecycleOwner) { id ->
-
-            startActivity(
-                Intent(
-                    requireActivity(),
-                    MainActivity::class.java
-                )
-            )
-            requireActivity().finish()
-        }
-
-    }
-
-    private fun initBiometric() {
-        val checkBiometric = biometricManager.canAuthenticate(
-            BiometricManager.Authenticators.DEVICE_CREDENTIAL
-                    or
-                    BiometricManager.Authenticators.BIOMETRIC_STRONG
-        )
-
-        when (checkBiometric) {
-            BiometricManager.BIOMETRIC_SUCCESS -> {
-                biometricPrompt.authenticate(promptInfo)
-            }
-
-            BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {}
-            BiometricManager.BIOMETRIC_ERROR_UNSUPPORTED -> {}
-            BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
-                val enrollIntent = Intent(Settings.ACTION_BIOMETRIC_ENROLL).apply {
-                    putExtra(
-                        Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
-                        BiometricManager.Authenticators.BIOMETRIC_STRONG
-                                or
-                                BiometricManager.Authenticators.DEVICE_CREDENTIAL
-                    )
+        loginFragmentVM.uiState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is UIStates.Success -> fetchNicknameAndNavigate()
+                is UIStates.Error -> {
+                    Snackbar.make(binding.root, state.message, Snackbar.LENGTH_LONG).show()
+                    managerUIStates.invoke(state)
                 }
-                startActivity(enrollIntent)
-            }
-
-            else -> {
-                Snackbar.make(
-                    binding.imgFinger, "Ocurrio un error inesperado en el sensor",
-                    Snackbar.LENGTH_LONG
-                ).show()
+                else -> managerUIStates.invoke(state)
             }
         }
     }
-
-
-
-/*
-    private fun initVariables() {
-        biometricManager = BiometricManager.from(requireActivity())
-        executor = ContextCompat.getMainExecutor(requireActivity())
-        promptInfo = BiometricPrompt.PromptInfo.Builder()
-            .setTitle("My application")
-            .setSubtitle("Ingrese su huella digital")
-            .setNegativeButtonText("Cancelar")
-            .build()
-
-        biometricPrompt = BiometricPrompt(
-            this,
-            executor,
-            object : BiometricPrompt.AuthenticationCallback() {
-
-
-                override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-                    super.onAuthenticationSucceeded(result)
-
-                    val x = Intent(requireActivity(), ConstrainActivity::class.java)
-                    startActivity(x)
-                }
-
-            }
-        )
-    }
-
- */
 
     private fun initListeners() {
-
         binding.btnSigIn.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
-           // findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment())
         }
 
         binding.imgFinger.setOnClickListener {
             initBiometric()
         }
 
-        //Aqui hacerle el cambio para ver los datos de el usuario., hasta borrarlol.
-
         binding.btnLogin.setOnClickListener {
-loginFragmentVM.authWhitFireBase(binding.etxtUser.text.toString(),
-    binding.etxtPassword.text.toString().toString(),auth, requireActivity())
-            //auth.signInWithEmailAndPassword()
-        }
-        /*
-        binding.btnLogin.setOnClickListener{
-            findNavController().navigate(R.id.action_loginFragment_to_recoveyFragment)
+            val email = binding.etxtUser.text.toString()
+            val password = binding.etxtPassword.text.toString()
+            val rememberMe = binding.recuerdame.isChecked
 
-l
-        }
-
-         */
-
-        /*
-        binding.btnLogin.setOnClickListener {
-
-            val loginUserCase = LoginUserpasswordUserCase(
-                MyApplication.getDBConnection()
-            )
-
-            lifecycleScope.launch(Dispatchers.Main) {
-
-                binding.lytLoading.root.visibility = View.VISIBLE
-
-                val result = withContext(Dispatchers.IO) {
-                    loginUserCase(
-                        binding.etxtUser.text.toString(),
-                        binding.etxtPassword.text.toString()
-                    )
+            if (email.isNotEmpty() && password.isNotEmpty()) {
+                loginFragmentVM.authWhitFireBase(email, password, auth, requireActivity())
+                if (rememberMe) {
+                    saveCredentials(email, password)
+                } else {
+                    clearCredentials()
                 }
-                result.onSuccess { user ->
-                    val intentToConstarintAct = Intent(
-                        requireActivity(),
-                        ConstrainActivity::class.java
-                    )
-                    startActivity(intentToConstarintAct)
-                    binding.lytLoading.root.visibility = View.GONE
-                }
-
-                result.onFailure {
-                    Toast.makeText(
-                        requireContext(),
-                        it.message.toString(),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+            } else {
+                Toast.makeText(requireContext(), "Please enter email and password", Toast.LENGTH_SHORT).show()
             }
-            binding.lytLoading.root.visibility = View.GONE
         }
 
-         */
-
-
+        // Carga las credenciales guardadas
+        loadSavedCredentials()
     }
 
-    private fun LoginLocal() {
-        val username = binding.etxtUser.text.toString()
-        val password = binding.etxtPassword.text.toString()
+    private fun saveCredentials(email: String, password: String) {
+        sharedPreferences.edit().apply {
+            putString("email", email)
+            putString("password", password)
+            apply()
+        }
+    }
 
-        lifecycleScope.launch {
-            loginFragmentVM.getUserFromDB(username, password, requireContext())
+    private fun clearCredentials() {
+        sharedPreferences.edit().apply {
+            remove("email")
+            remove("password")
+            apply()
+        }
+    }
+
+    private fun loadSavedCredentials() {
+        val savedEmail = sharedPreferences.getString("email", "")
+        val savedPassword = sharedPreferences.getString("password", "")
+        binding.etxtUser.setText(savedEmail)
+        binding.etxtPassword.setText(savedPassword)
+    }
+
+    private fun initBiometric() {
+        biometricManager = BiometricManager.from(requireContext())
+        biometricPrompt = BiometricPrompt(this, executor, object : BiometricPrompt.AuthenticationCallback() {
+            override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                super.onAuthenticationError(errorCode, errString)
+                Snackbar.make(binding.imgFinger, "Authentication error: $errString", Snackbar.LENGTH_LONG).show()
+            }
+
+            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                super.onAuthenticationSucceeded(result)
+                fetchNicknameAndNavigate()
+            }
+
+            override fun onAuthenticationFailed() {
+                super.onAuthenticationFailed()
+                Snackbar.make(binding.imgFinger, "Authentication failed", Snackbar.LENGTH_LONG).show()
+            }
+        })
+
+        promptInfo = BiometricPrompt.PromptInfo.Builder()
+            .setTitle("Biometric Login")
+            .setSubtitle("Use your biometric credential to log in")
+            .setNegativeButtonText("Cancel")
+            .build()
+
+        val checkBiometric = biometricManager.canAuthenticate(
+            BiometricManager.Authenticators.BIOMETRIC_STRONG or
+                    BiometricManager.Authenticators.DEVICE_CREDENTIAL
+        )
+
+        when (checkBiometric) {
+            BiometricManager.BIOMETRIC_SUCCESS -> {
+                biometricPrompt.authenticate(promptInfo)
+            }
+            BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE,
+            BiometricManager.BIOMETRIC_ERROR_UNSUPPORTED -> {
+                Snackbar.make(binding.imgFinger, "Biometric authentication is not supported", Snackbar.LENGTH_LONG).show()
+            }
+            BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
+                val enrollIntent = Intent(Settings.ACTION_BIOMETRIC_ENROLL).apply {
+                    putExtra(
+                        Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
+                        BiometricManager.Authenticators.BIOMETRIC_STRONG or
+                                BiometricManager.Authenticators.DEVICE_CREDENTIAL
+                    )
+                }
+                startActivity(enrollIntent)
+            }
+            else -> {
+                Snackbar.make(binding.imgFinger, "Unexpected error in biometric sensor", Snackbar.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    private fun fetchNicknameAndNavigate() {
+        val user = auth.currentUser ?: return
+        val userId = user.uid
+
+        val firestore = FirebaseFirestore.getInstance()
+        val userRef = firestore.collection("users").document(userId)
+
+        userRef.get().addOnSuccessListener { document ->
+            if (document != null && document.exists()) {
+                val nickname = document.getString("nickname") ?: "Nickname"
+                val intent = Intent(requireActivity(), MainActivity::class.java)
+                intent.putExtra("USER_NICKNAME", nickname)
+                startActivity(intent)
+                requireActivity().finish()
+            } else {
+                Toast.makeText(requireContext(), "No nickname found", Toast.LENGTH_SHORT).show()
+            }
+        }.addOnFailureListener { e ->
+            Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
         }
     }
 }

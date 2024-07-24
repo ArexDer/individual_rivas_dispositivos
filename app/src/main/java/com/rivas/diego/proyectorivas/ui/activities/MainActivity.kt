@@ -7,31 +7,57 @@ import com.rivas.diego.proyectorivas.R
 import com.rivas.diego.proyectorivas.databinding.ActivityMainBinding
 import com.rivas.diego.proyectorivas.ui.fragments.login.LoginFragment
 
+import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
+
+import androidx.navigation.fragment.NavHostFragment
+
+import com.rivas.diego.proyectorivas.ui.viewmodels.main.ListarMovieInfoVM
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+
+    private val listarMovieInfoVM: ListarMovieInfoVM by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+    }
 
-        val splash = installSplashScreen()
+    override fun onBackPressed() {
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.containerFragments) as? NavHostFragment
+        val fragment = currentFragment?.childFragmentManager?.fragments?.firstOrNull()
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-
-        /*
-
-        splash.setKeepOnScreenCondition { false }
-
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, LoginFragment())
-                .commit()
+        if (fragment is LoginFragment) {
+            super.onBackPressed()
+        } else {
+            showLogoutConfirmationDialog()
         }
+    }
 
-         */
+    private fun showLogoutConfirmationDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Cerrar Sesión")
+            .setMessage("¿Quieres cerrar sesión?")
+            .setPositiveButton("Sí") { dialog, _ ->
+                dialog.dismiss()
+                logout()
+            }
+            .setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
 
+    private fun logout() {
+        // Implementar el método de cierre de sesión aquí
+        // Por ejemplo, limpiar las credenciales y volver al fragmento de login
+        // Puedes usar SharedPreferences para borrar los datos
+        val sharedPreferences = getSharedPreferences("login_prefs", MODE_PRIVATE)
+        sharedPreferences.edit().clear().apply()
 
+        // Volver al fragmento de login
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.containerFragments, LoginFragment())
+            .commit()
     }
 }
