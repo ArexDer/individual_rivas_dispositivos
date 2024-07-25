@@ -18,5 +18,9 @@
         android:id="@+id/profileSettingsFragment2"
         android:name="com.rivas.diego.proyectorivas.ui.fragments.login.ProfileSettingsFragment"
         android:label="fragment_profile_settings"
-        tools:layout="@layout/fragment_profile_settings" />
+        tools:layout="@layout/fragment_profile_settings" >
+        <action
+            android:id="@+id/action_profileSettingsFragment2_to_moviesFragment2"
+            app:destination="@id/moviesFragment2" />
+    </fragment>
 </navigation>

@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rivas.diego.proyectorivas.logic.usercase.movie.GetMovieInfoPopularityUserCase
 import com.rivas.diego.proyectorivas.ui.core.UIStates
-import com.rivas.diego.proyectorivas.ui.entities.MoviesInfoUI
+import com.rivas.diego.proyectorivas.ui.entities.movies.MoviesInfoUI
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

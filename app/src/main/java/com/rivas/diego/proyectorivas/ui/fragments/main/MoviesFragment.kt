@@ -15,14 +15,26 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.rivas.diego.proyectorivas.R
 import com.rivas.diego.proyectorivas.databinding.FragmentMoviesBinding
 import com.rivas.diego.proyectorivas.ui.adapters.ListarMoviesPopularityAdapter
+import com.rivas.diego.proyectorivas.ui.adapters.ListarMoviesUpAdapter
+import com.rivas.diego.proyectorivas.ui.adapters.ListarTVSeriesAdapter
 import com.rivas.diego.proyectorivas.ui.core.ManageUIStates
+import com.rivas.diego.proyectorivas.ui.viewmodels.main.MoviesUpVM
 import com.rivas.diego.proyectorivas.ui.viewmodels.main.MoviesVM
+import com.rivas.diego.proyectorivas.ui.viewmodels.main.TVSeriesVM
 
 class MoviesFragment : Fragment() {
 
     private lateinit var binding: FragmentMoviesBinding
+
     private lateinit var adapter: ListarMoviesPopularityAdapter
+    private lateinit var adapterMoviesUp: ListarMoviesUpAdapter
+    private lateinit var adapterTV: ListarTVSeriesAdapter
+
+
     private val moviesVM: MoviesVM by viewModels()
+    private val moviesUpVM: MoviesUpVM by viewModels()
+    private val tvVM: TVSeriesVM by viewModels()
+
     private lateinit var manageUIStates: ManageUIStates
 
     override fun onCreateView(
@@ -50,6 +62,8 @@ class MoviesFragment : Fragment() {
 
     private fun initData() {
         moviesVM.initData()
+        moviesUpVM.initData()
+        tvVM.initData()
         Log.d("TAG", "Iniciando Datos...!")
     }
 
@@ -61,6 +75,26 @@ class MoviesFragment : Fragment() {
         moviesVM.uiState.observe(viewLifecycleOwner) {
             manageUIStates.invoke(it)
         }
+
+        //---------------
+        moviesUpVM.itemsMoviesUp.observe(viewLifecycleOwner) {
+            adapterMoviesUp.submitList(it)
+        }
+
+        moviesUpVM.uiState.observe(viewLifecycleOwner) {
+            manageUIStates.invoke(it)
+        }
+
+        //-----------------
+        tvVM.itemsTVSeries.observe(viewLifecycleOwner) {
+            adapterTV.submitList(it)
+        }
+
+        tvVM.uiState.observe(viewLifecycleOwner) {
+            manageUIStates.invoke(it)
+        }
+
+
     }
 
     private fun initListeners() {
@@ -74,18 +108,20 @@ class MoviesFragment : Fragment() {
     private fun initVariables() {
         manageUIStates = ManageUIStates(requireActivity(), binding.lytLoading.mainLayout)
         adapter = ListarMoviesPopularityAdapter()
+        adapterMoviesUp=ListarMoviesUpAdapter()
+        adapterTV=ListarTVSeriesAdapter()
 
         binding.rvDiscover.adapter = adapter
         binding.rvDiscover.layoutManager = LinearLayoutManager(
             requireActivity(), LinearLayoutManager.HORIZONTAL, false
         )
 
-        binding.rvRanking.adapter = adapter
+        binding.rvRanking.adapter = adapterTV
         binding.rvRanking.layoutManager = LinearLayoutManager(
             requireActivity(), LinearLayoutManager.HORIZONTAL, false
         )
 
-        binding.rvComingSoon.adapter = adapter
+        binding.rvComingSoon.adapter = adapterMoviesUp
         binding.rvComingSoon.layoutManager = LinearLayoutManager(
             requireActivity(), LinearLayoutManager.HORIZONTAL, false
         )

@@ -4,7 +4,7 @@ import android.util.Log
 import com.rivas.diego.proyectorivas.data.network.endpoints.MoviesEndPoints
 import com.rivas.diego.proyectorivas.data.network.repository.RetrofitBase
 import com.rivas.diego.proyectorivas.ui.core.toMoviesInfoUI
-import com.rivas.diego.proyectorivas.ui.entities.MoviesInfoUI
+import com.rivas.diego.proyectorivas.ui.entities.movies.MoviesInfoUI
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow

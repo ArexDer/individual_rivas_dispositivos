@@ -1,4 +1,4 @@
-package com.rivas.diego.proyectorivas.ui.entities
+package com.rivas.diego.proyectorivas.ui.entities.movies
 
 data class MoviesInfoUI (
 

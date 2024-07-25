@@ -1,7 +1,7 @@
 package com.rivas.diego.proyectorivas.ui.core
 
 import com.rivas.diego.proyectorivas.data.network.entities.movies.Result
-import com.rivas.diego.proyectorivas.ui.entities.MoviesInfoUI
+import com.rivas.diego.proyectorivas.ui.entities.movies.MoviesInfoUI
 
 fun Result.toMoviesInfoUI() = MoviesInfoUI(
 

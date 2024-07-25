@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/my_primary"
-        android:alpha="0.7">
+        android:alpha="0.9">
 
         <ImageView
 
@@ -17,6 +17,9 @@
             android:layout_width="128dp"
             android:layout_height="157dp"
             android:layout_marginBottom="10sp"
+            android:layout_marginTop="10sp"
+            android:layout_marginStart="5sp"
+            android:layout_marginEnd="5sp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_launcher_foreground"
             app:layout_constraintBottom_toBottomOf="parent"

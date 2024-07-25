@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.rivas.diego.proyectorivas.R
 import com.rivas.diego.proyectorivas.databinding.ItemMoviesInfoBinding
-import com.rivas.diego.proyectorivas.ui.entities.MoviesInfoUI
+import com.rivas.diego.proyectorivas.ui.entities.movies.MoviesInfoUI
 
 class ListarMoviesPopularityAdapter:
     ListAdapter<MoviesInfoUI,ListarMoviesPopularityAdapter.MovieVH>(DiffUtilMovieCallback){

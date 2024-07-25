@@ -40,7 +40,7 @@ class ProfileSettingsFragment : Fragment() {
             saveUserData()
         }
         binding.btnReturn.setOnClickListener {
-            findNavController().navigate(R.id.action_profileSettingsFragment_to_moviesFragment)
+            findNavController().navigate(R.id.action_profileSettingsFragment2_to_moviesFragment2)
         }
 
         initVariables()
