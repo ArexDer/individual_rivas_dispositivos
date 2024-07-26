@@ -12,15 +12,18 @@ import com.rivas.diego.proyectorivas.R
 import com.rivas.diego.proyectorivas.databinding.ItemMoviesInfoBinding
 import com.rivas.diego.proyectorivas.ui.entities.tv.TVSeriesUI
 
-class ListarTVSeriesAdapter :
-    ListAdapter<TVSeriesUI, ListarTVSeriesAdapter.TVSeriesVH>(DiffUtilTVCallback){
+class ListarTVSeriesAdapter(
+    private val onItemClick: (TVSeriesUI) -> Unit
+) : ListAdapter<TVSeriesUI, ListarTVSeriesAdapter.TVSeriesVH>(DiffUtilTVCallback) {
 
-    class TVSeriesVH(view: View): RecyclerView.ViewHolder(view){
-        private val binding= ItemMoviesInfoBinding.bind(view)
+    inner class TVSeriesVH(view: View) : RecyclerView.ViewHolder(view) {
+        private val binding = ItemMoviesInfoBinding.bind(view)
 
-        fun render(item: TVSeriesUI){
-            binding.imageView.load("https://image.tmdb.org/t/p/w500"+item.poster_path)
-
+        fun render(item: TVSeriesUI) {
+            binding.imageView.load("https://image.tmdb.org/t/p/w500" + item.poster_path)
+            binding.root.setOnClickListener {
+                onItemClick(item)
+            }
         }
     }
 
@@ -36,25 +39,17 @@ class ListarTVSeriesAdapter :
     }
 
     override fun onBindViewHolder(holder: TVSeriesVH, position: Int) {
-        holder.render(
-            getItem(position)
-        )
+        holder.render(getItem(position))
     }
-
-
 }
 
 object DiffUtilTVCallback : DiffUtil.ItemCallback<TVSeriesUI>() {
-    override fun areItemsTheSame(oldItem: TVSeriesUI, newItem: TVSeriesUI):
-            Boolean {
+    override fun areItemsTheSame(oldItem: TVSeriesUI, newItem: TVSeriesUI): Boolean {
         return oldItem.id == newItem.id
-
     }
 
     @SuppressLint("DiffUtilEquals")
-    override fun areContentsTheSame(oldItem: TVSeriesUI, newItem: TVSeriesUI):
-            Boolean {
+    override fun areContentsTheSame(oldItem: TVSeriesUI, newItem: TVSeriesUI): Boolean {
         return oldItem == newItem
     }
-
 }

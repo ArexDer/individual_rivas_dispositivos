@@ -9,5 +9,6 @@ fun Result.toUpcomingAPI()= MoviesUpUI (
     this.original_title,
     this.title,
     this.popularity,
-    this.poster_path
+    this.poster_path,
+    this.overview
 )

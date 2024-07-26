@@ -11,17 +11,20 @@ import com.rivas.diego.proyectorivas.R
 import com.rivas.diego.proyectorivas.databinding.ItemMoviesInfoBinding
 import com.rivas.diego.proyectorivas.ui.entities.movies.MoviesInfoUI
 
-class ListarMoviesPopularityAdapter:
-    ListAdapter<MoviesInfoUI,ListarMoviesPopularityAdapter.MovieVH>(DiffUtilMovieCallback){
+class ListarMoviesPopularityAdapter(
+    private val onItemClick: (MoviesInfoUI) -> Unit
+) : ListAdapter<MoviesInfoUI, ListarMoviesPopularityAdapter.MovieVH>(DiffUtilMovieCallback) {
 
-        class MovieVH(view: View): RecyclerView.ViewHolder(view){
-            private val binding= ItemMoviesInfoBinding.bind(view)
+    inner class MovieVH(view: View) : RecyclerView.ViewHolder(view) {
+        private val binding = ItemMoviesInfoBinding.bind(view)
 
-            fun render(item: MoviesInfoUI){
-                binding.imageView.load("https://image.tmdb.org/t/p/w500"+item.poster_path)
-
+        fun render(item: MoviesInfoUI) {
+            binding.imageView.load("https://image.tmdb.org/t/p/w500" + item.poster_path)
+            binding.root.setOnClickListener {
+                onItemClick(item)
             }
         }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieVH {
         val inflater = LayoutInflater.from(parent.context)
@@ -35,24 +38,16 @@ class ListarMoviesPopularityAdapter:
     }
 
     override fun onBindViewHolder(holder: MovieVH, position: Int) {
-        holder.render(
-            getItem(position)
-        )
+        holder.render(getItem(position))
     }
-
-
 }
 
 object DiffUtilMovieCallback : DiffUtil.ItemCallback<MoviesInfoUI>() {
-    override fun areItemsTheSame(oldItem: MoviesInfoUI, newItem: MoviesInfoUI):
-            Boolean {
+    override fun areItemsTheSame(oldItem: MoviesInfoUI, newItem: MoviesInfoUI): Boolean {
         return oldItem.id == newItem.id
-
     }
 
-    override fun areContentsTheSame(oldItem: MoviesInfoUI, newItem: MoviesInfoUI):
-            Boolean {
+    override fun areContentsTheSame(oldItem: MoviesInfoUI, newItem: MoviesInfoUI): Boolean {
         return oldItem == newItem
     }
-
 }

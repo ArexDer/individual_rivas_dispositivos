@@ -13,7 +13,7 @@ interface MoviesEndPoints {
     suspend fun getDiscoverMovies(
         @Query("include_adult") includeAdult: Boolean = false,
         @Query("include_video") includeVideo: Boolean = false,
-        @Query("language") language: String = "en-US",
+        @Query("language") language: String = "es-MX",
         @Query("page") page: Int = 1,
         @Query("sort_by") sortBy: String = "popularity.desc"
 
@@ -21,7 +21,7 @@ interface MoviesEndPoints {
 
     @GET("movie/upcoming")
     suspend fun getUpcomingMovies(
-        @Query("language") language: String = "en-US",
+        @Query("language") language: String = "es-MX",
         @Query("page") page: Int = 1
     ): Response<UpcomingAPI>
 
@@ -29,7 +29,7 @@ interface MoviesEndPoints {
     suspend fun getdiscoverTVShows(
         @Query("include_adult") includeAdult: Boolean = true,
         @Query("include_null_first_air_dates") includeNullFirstAirDates: Boolean = false,
-        @Query("language") language: String = "en-US",
+        @Query("language") language: String = "es-MX",
         @Query("page") page: Int = 1,
         @Query("sort_by") sortBy: String = "popularity.desc"
     ): Response<TVShowsAPI>

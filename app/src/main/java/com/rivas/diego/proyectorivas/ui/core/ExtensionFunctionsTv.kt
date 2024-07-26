@@ -11,5 +11,6 @@ fun Result.toTVSeriesUI()= TVSeriesUI (
     this.popularity,
     this.poster_path,
     this.vote_average,
-    this.vote_count
+    this.vote_count,
+    this.overview
 )

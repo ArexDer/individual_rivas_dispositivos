@@ -10,14 +10,20 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import coil.load
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.rivas.diego.proyectorivas.R
+import com.rivas.diego.proyectorivas.databinding.DialogMovieInfoBinding
 import com.rivas.diego.proyectorivas.databinding.FragmentMoviesBinding
 import com.rivas.diego.proyectorivas.ui.adapters.ListarMoviesPopularityAdapter
 import com.rivas.diego.proyectorivas.ui.adapters.ListarMoviesUpAdapter
 import com.rivas.diego.proyectorivas.ui.adapters.ListarTVSeriesAdapter
+import com.rivas.diego.proyectorivas.ui.entities.movies.MoviesInfoUI
 import com.rivas.diego.proyectorivas.ui.core.ManageUIStates
+import com.rivas.diego.proyectorivas.ui.entities.movies.MoviesUpUI
+import com.rivas.diego.proyectorivas.ui.entities.tv.TVSeriesUI
 import com.rivas.diego.proyectorivas.ui.viewmodels.main.MoviesUpVM
 import com.rivas.diego.proyectorivas.ui.viewmodels.main.MoviesVM
 import com.rivas.diego.proyectorivas.ui.viewmodels.main.TVSeriesVM
@@ -29,7 +35,6 @@ class MoviesFragment : Fragment() {
     private lateinit var adapter: ListarMoviesPopularityAdapter
     private lateinit var adapterMoviesUp: ListarMoviesUpAdapter
     private lateinit var adapterTV: ListarTVSeriesAdapter
-
 
     private val moviesVM: MoviesVM by viewModels()
     private val moviesUpVM: MoviesUpVM by viewModels()
@@ -48,7 +53,6 @@ class MoviesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         // Inicializar variables, oyentes y observadores
         initVariables()
@@ -93,23 +97,20 @@ class MoviesFragment : Fragment() {
         tvVM.uiState.observe(viewLifecycleOwner) {
             manageUIStates.invoke(it)
         }
-
-
     }
 
     private fun initListeners() {
         binding.ivProfilePicture.setOnClickListener {
             findNavController().navigate(R.id.action_moviesFragment2_to_profileSettingsFragment2)
         }
-
-
     }
 
     private fun initVariables() {
         manageUIStates = ManageUIStates(requireActivity(), binding.lytLoading.mainLayout)
-        adapter = ListarMoviesPopularityAdapter()
-        adapterMoviesUp=ListarMoviesUpAdapter()
-        adapterTV=ListarTVSeriesAdapter()
+
+        adapter = ListarMoviesPopularityAdapter { movie -> showMovieInfoDialog(movie) }
+        adapterMoviesUp = ListarMoviesUpAdapter { movieUp -> showMovieUpDialog(movieUp) }
+        adapterTV = ListarTVSeriesAdapter { tvSeries -> showTVSeriesDialog(tvSeries) }
 
         binding.rvDiscover.adapter = adapter
         binding.rvDiscover.layoutManager = LinearLayoutManager(
@@ -143,5 +144,55 @@ class MoviesFragment : Fragment() {
             }
     }
 
+    private fun showMovieInfoDialog(movie: MoviesInfoUI) {
+        val dialogBinding = DialogMovieInfoBinding.inflate(LayoutInflater.from(requireContext()))
 
+        dialogBinding.ivBackground.load("https://image.tmdb.org/t/p/w500" + movie.poster_path) {
+            crossfade(true)
+        }
+        dialogBinding.tvTitle.text = movie.title
+        dialogBinding.tvOriginalLanguage.text = movie.original_language
+        dialogBinding.tvPopularity.text = movie.popularity.toString()
+        dialogBinding.tvSynopsis.text = movie.overview  // Agregar la sinopsis
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setView(dialogBinding.root)
+            .setPositiveButton("OK", null)
+            .show()
+    }
+
+    private fun showMovieUpDialog(movieUp: MoviesUpUI) {
+        val dialogBinding = DialogMovieInfoBinding.inflate(LayoutInflater.from(requireContext()))
+
+        dialogBinding.ivBackground.load("https://image.tmdb.org/t/p/w500" + movieUp.poster_path) {
+            crossfade(true)
+        }
+        dialogBinding.tvTitle.text = movieUp.title
+        dialogBinding.tvOriginalLanguage.text = movieUp.original_language
+        dialogBinding.tvPopularity.text = movieUp.popularity.toString()
+        dialogBinding.tvSynopsis.text = movieUp.overview
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setView(dialogBinding.root)
+            .setPositiveButton("OK", null)
+            .show()
+    }
+
+    private fun showTVSeriesDialog(tvSeries: TVSeriesUI) {
+        val dialogBinding = DialogMovieInfoBinding.inflate(LayoutInflater.from(requireContext()))
+
+        dialogBinding.ivBackground.load("https://image.tmdb.org/t/p/w500" + tvSeries.poster_path) {
+            crossfade(true)
+        }
+        dialogBinding.tvTitle.text = tvSeries.name
+        dialogBinding.tvOriginalLanguage.text = tvSeries.original_name
+        dialogBinding.tvPopularity.text = tvSeries.popularity.toString()
+        dialogBinding.tvSynopsis.text = tvSeries.overview
+        //dialogBinding.tvSynopsis.text = tvSeries.vote_average.toString() + " (Votes: " + tvSeries.vote_count + ")"
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setView(dialogBinding.root)
+            .setPositiveButton("OK", null)
+            .show()
+    }
 }

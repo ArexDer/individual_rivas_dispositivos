@@ -108,4 +108,12 @@ dependencies {
     //FIRESTORE
     implementation("com.google.firebase:firebase-firestore")
 
+    //CARD POP-UP
+    implementation ("androidx.cardview:cardview:1.0.0")
+
+    //Material
+    implementation ("com.google.android.material:material:1.8.0")
+
+
+
 }

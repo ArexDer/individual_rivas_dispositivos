@@ -10,24 +10,26 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.rivas.diego.proyectorivas.R
 import com.rivas.diego.proyectorivas.databinding.ItemMoviesInfoBinding
-import com.rivas.diego.proyectorivas.ui.entities.movies.MoviesInfoUI
 import com.rivas.diego.proyectorivas.ui.entities.movies.MoviesUpUI
 
-class ListarMoviesUpAdapter:
-    ListAdapter<MoviesUpUI, ListarMoviesUpAdapter.MovieUpVH>(DiffUtilMovieUpCallback){
+class ListarMoviesUpAdapter(
+    private val onItemClick: (MoviesUpUI) -> Unit
+) : ListAdapter<MoviesUpUI, ListarMoviesUpAdapter.MovieVH>(DiffUtilMoviesUpCallback) {
 
-    class MovieUpVH(view: View): RecyclerView.ViewHolder(view){
-        private val binding= ItemMoviesInfoBinding.bind(view)
+    inner class MovieVH(view: View) : RecyclerView.ViewHolder(view) {
+        private val binding = ItemMoviesInfoBinding.bind(view)
 
-        fun render(item: MoviesUpUI){
-            binding.imageView.load("https://image.tmdb.org/t/p/w500"+item.poster_path)
-
+        fun render(item: MoviesUpUI) {
+            binding.imageView.load("https://image.tmdb.org/t/p/w500" + item.poster_path)
+            binding.root.setOnClickListener {
+                onItemClick(item)
+            }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieUpVH {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieVH {
         val inflater = LayoutInflater.from(parent.context)
-        return MovieUpVH(
+        return MovieVH(
             inflater.inflate(
                 R.layout.item_movies_info,
                 parent,
@@ -36,26 +38,18 @@ class ListarMoviesUpAdapter:
         )
     }
 
-    override fun onBindViewHolder(holder: MovieUpVH, position: Int) {
-        holder.render(
-            getItem(position)
-        )
+    override fun onBindViewHolder(holder: MovieVH, position: Int) {
+        holder.render(getItem(position))
     }
-
-
 }
 
-object DiffUtilMovieUpCallback : DiffUtil.ItemCallback<MoviesUpUI>() {
-    override fun areItemsTheSame(oldItem: MoviesUpUI, newItem: MoviesUpUI):
-            Boolean {
+object DiffUtilMoviesUpCallback : DiffUtil.ItemCallback<MoviesUpUI>() {
+    override fun areItemsTheSame(oldItem: MoviesUpUI, newItem: MoviesUpUI): Boolean {
         return oldItem.id == newItem.id
-
     }
 
     @SuppressLint("DiffUtilEquals")
-    override fun areContentsTheSame(oldItem: MoviesUpUI, newItem: MoviesUpUI):
-            Boolean {
+    override fun areContentsTheSame(oldItem: MoviesUpUI, newItem: MoviesUpUI): Boolean {
         return oldItem == newItem
     }
-
 }

@@ -19,7 +19,7 @@ class GetMovieUpcomingUserCase {
 
         var response = RetrofitBase.returnBaseRetrofitMovies()
             .create(MoviesEndPoints::class.java)
-            .getUpcomingMovies("en-US")
+            .getUpcomingMovies("es-MX")
 
         Log.d("stop", response.toString())
         if (response.isSuccessful) {

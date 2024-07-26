@@ -10,6 +10,6 @@ fun Result.toMoviesInfoUI() = MoviesInfoUI(
     this.original_title,
     this.title,
     this.popularity,
-    this.poster_path
-
+    this.poster_path,
+    this.overview
 )

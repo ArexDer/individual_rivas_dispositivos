@@ -7,7 +7,6 @@
     android:background="@color/black"
     tools:context=".ui.fragments.main.MoviesFragment">
 
-
     <LinearLayout
         android:background="@color/purple"
         android:id="@+id/topBar"
@@ -19,7 +18,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-
         <TextView
             android:id="@+id/tvNickname"
             android:layout_width="0dp"
@@ -28,7 +26,6 @@
             android:text="Nickname"
             android:textSize="18sp"
             android:textColor="@android:color/black" />
-
 
         <ImageView
             android:id="@+id/ivProfilePicture"
@@ -100,8 +97,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Loading layout -->
     <include
         android:id="@+id/lytLoading"
         layout="@layout/loading_layout" />
 
+    <!-- Floating Action Button -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/search"
+        android:src="@drawable/ic_search"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
