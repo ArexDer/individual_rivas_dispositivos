@@ -46,6 +46,7 @@ android {
     //añadido
     buildFeatures {
         viewBinding = true
+        dataBinding = true
     }
 }
 
@@ -58,6 +59,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.firestore.ktx)
+    implementation(libs.car.ui.lib)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -112,7 +114,7 @@ dependencies {
     implementation ("androidx.cardview:cardview:1.0.0")
 
     //Material
-    implementation ("com.google.android.material:material:1.8.0")
+    implementation ("com.google.android.material:material:1.9.0")
 
 
 

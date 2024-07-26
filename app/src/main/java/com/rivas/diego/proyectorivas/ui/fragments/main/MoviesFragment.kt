@@ -103,6 +103,11 @@ class MoviesFragment : Fragment() {
         binding.ivProfilePicture.setOnClickListener {
             findNavController().navigate(R.id.action_moviesFragment2_to_profileSettingsFragment2)
         }
+
+        binding.fabSearch.setOnClickListener {
+            findNavController().navigate(R.id.action_moviesFragment2_to_searchFragment)
+        }
+
     }
 
     private fun initVariables() {

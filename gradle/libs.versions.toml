@@ -22,6 +22,7 @@ coordinatorlayout="1.2.0"
 room="2.6.1"
 firebaseAuthKtx = "23.0.0"
 firebaseFirestoreKtx = "25.0.0"
+carUiLib = "2.6.0"
 
 
 [libraries]
@@ -47,6 +48,7 @@ room-compiler={group="androidx.room",name="room-compiler",version.ref="room"}
 room-compiler-ksp={group="androidx.room",name="room-compiler",version.ref="room"}
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
 firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
+car-ui-lib = { group = "com.android.car.ui", name = "car-ui-lib", version.ref = "carUiLib" }
 
 [bundles]
 retrofit = ["retrofit", "retrofit-converter", "corutinas"]
