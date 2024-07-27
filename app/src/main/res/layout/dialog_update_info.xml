@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/celeste"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PRÓXIMAS ACTUALIZACIONES"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="
+        - Recuperación de credenciales\n
+        - Agregar Favoritos\n
+        - Agregar preferencia de géneros\n
+        - Nueva Búsqueda\n
+        - Mayor Catálogo\nSiguiente versión en 05/02/20xx"
+        android:textSize="14sp"
+        android:textColor="@android:color/black"
+        android:layout_below="@id/textViewTitle"
+        android:layout_marginBottom="16dp"
+        android:layout_centerHorizontal="true"/>
+
+</RelativeLayout>

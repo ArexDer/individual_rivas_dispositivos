@@ -38,9 +38,6 @@
         <action
             android:id="@+id/action_moviesFragment_to_profileSettingsFragment"
             app:destination="@id/profileSettingsFragment" />
-        <action
-            android:id="@+id/action_moviesFragment_to_modificarFragment"
-            app:destination="@id/modificarFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileSettingsFragment"
@@ -51,10 +48,5 @@
             android:id="@+id/action_profileSettingsFragment_to_moviesFragment"
             app:destination="@id/moviesFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/modificarFragment"
-        android:name="com.rivas.diego.proyectorivas.ui.fragments.login.ModificarFragment"
-        android:label="fragment_modificar"
-        tools:layout="@layout/fragment_modificar" />
 
 </navigation>

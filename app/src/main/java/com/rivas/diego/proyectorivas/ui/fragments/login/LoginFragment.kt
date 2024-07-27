@@ -8,14 +8,16 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.ImageView
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
+import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.rivas.diego.proyectorivas.R
@@ -27,6 +29,7 @@ import com.rivas.diego.proyectorivas.ui.viewmodels.login.LoginFragmentVM
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.concurrent.Executor
+import java.util.concurrent.Executors
 
 class LoginFragment : Fragment() {
 
@@ -39,17 +42,14 @@ class LoginFragment : Fragment() {
     private val loginFragmentVM: LoginFragmentVM by viewModels()
     private lateinit var auth: FirebaseAuth
 
-    // PARA GUARDAR MIS CREDENCIALES
     private lateinit var sharedPreferences: SharedPreferences
-    private val sharedPreferencesEditor: SharedPreferences.Editor by lazy {
-        sharedPreferences.edit()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentLoginBinding.inflate(inflater, container, false)
+        sharedPreferences = requireContext().getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
         return binding.root
     }
 
@@ -57,23 +57,28 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initVariables()
+        loadSavedCredentials()
         initListeners()
-        initiObservers()
+        initObservers()
+
+        val fabInfo: FloatingActionButton = view.findViewById(R.id.fabInfo)
+        fabInfo.setOnClickListener {
+            showUpdateInfoDialog()
+        }
     }
 
     private fun initVariables() {
         auth = FirebaseAuth.getInstance()
         managerUIStates = ManageUIStates(requireActivity(), binding.lytLoading.mainLayout)
-        // Inicializa SharedPreferences
-        sharedPreferences = requireContext().getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
+        executor = Executors.newSingleThreadExecutor()
     }
 
-    private fun initiObservers() {
+    private fun initObservers() {
         loginFragmentVM.uiState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UIStates.Success -> fetchNicknameAndNavigate()
                 is UIStates.Error -> {
-                    Snackbar.make(binding.root, state.message, Snackbar.LENGTH_LONG).show()
+                    showAlertDialog("Error", state.message)
                     managerUIStates.invoke(state)
                 }
                 else -> managerUIStates.invoke(state)
@@ -98,7 +103,7 @@ class LoginFragment : Fragment() {
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 lifecycleScope.launch {
                     loginFragmentVM.authWhitFireBase(email, password, auth, requireActivity())
-                    delay(5000) 
+                    delay(5000)
                     if (rememberMe) {
                         saveCredentials(email, password)
                     } else {
@@ -106,12 +111,9 @@ class LoginFragment : Fragment() {
                     }
                 }
             } else {
-                Toast.makeText(requireContext(), "Please enter email and password", Toast.LENGTH_SHORT).show()
+                showAlertDialog("Error!!!", "Ingresa tus Credenciales")
             }
         }
-
-        // Carga las credenciales guardadas
-        loadSavedCredentials()
     }
 
     private fun saveCredentials(email: String, password: String) {
@@ -142,7 +144,7 @@ class LoginFragment : Fragment() {
         biometricPrompt = BiometricPrompt(this, executor, object : BiometricPrompt.AuthenticationCallback() {
             override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                 super.onAuthenticationError(errorCode, errString)
-                Snackbar.make(binding.imgFinger, "Authentication error: $errString", Snackbar.LENGTH_LONG).show()
+                showAlertDialog("Authentication error", errString.toString())
             }
 
             override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
@@ -152,7 +154,7 @@ class LoginFragment : Fragment() {
 
             override fun onAuthenticationFailed() {
                 super.onAuthenticationFailed()
-                Snackbar.make(binding.imgFinger, "Authentication failed", Snackbar.LENGTH_LONG).show()
+                showAlertDialog("Authentication failed", "Please try again")
             }
         })
 
@@ -173,7 +175,7 @@ class LoginFragment : Fragment() {
             }
             BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE,
             BiometricManager.BIOMETRIC_ERROR_UNSUPPORTED -> {
-                Snackbar.make(binding.imgFinger, "Biometric authentication is not supported", Snackbar.LENGTH_LONG).show()
+                showAlertDialog("Error", "Biometric authentication is not supported")
             }
             BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
                 val enrollIntent = Intent(Settings.ACTION_BIOMETRIC_ENROLL).apply {
@@ -186,7 +188,7 @@ class LoginFragment : Fragment() {
                 startActivity(enrollIntent)
             }
             else -> {
-                Snackbar.make(binding.imgFinger, "Unexpected error in biometric sensor", Snackbar.LENGTH_LONG).show()
+                showAlertDialog("Error", "Unexpected error in biometric sensor")
             }
         }
     }
@@ -206,10 +208,35 @@ class LoginFragment : Fragment() {
                 startActivity(intent)
                 requireActivity().finish()
             } else {
-                Toast.makeText(requireContext(), "No nickname found", Toast.LENGTH_SHORT).show()
+                showAlertDialog("Error", "No nickname found")
             }
         }.addOnFailureListener { e ->
-            Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+            showAlertDialog("Error", e.message ?: "Unknown error")
         }
+    }
+
+    private fun showAlertDialog(title: String, message: String) {
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_with_gif, null)
+        val imageView: ImageView = dialogView.findViewById(R.id.imageView)
+
+        Glide.with(this).load(R.drawable.alerta_mensaje).into(imageView)
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(title)
+            .setMessage(message)
+            .setView(dialogView)
+            .setPositiveButton("OK", null)
+            .show()
+    }
+
+    private fun showUpdateInfoDialog() {
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_update_info, null)
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setView(dialogView)
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 }

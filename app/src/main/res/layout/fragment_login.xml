@@ -108,12 +108,7 @@
                     android:layout_centerVertical="true"
                     android:alpha="0.6"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Olvide mi clave"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"/>
+
             </RelativeLayout>
 
             <View
@@ -162,5 +157,27 @@
         android:id="@+id/lytLoading"
         layout="@layout/loading_layout"
         android:visibility="gone" />
+
+    <!-- Alert ImageView -->
+    <ImageView
+        android:id="@+id/alertImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/alerta_mensaje" />
+
+    <!-- Floating Action Button -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabInfo"
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/info"
+        app:backgroundTint="@color/black2"
+        app:tint="@android:color/white" />
 
 </RelativeLayout>
