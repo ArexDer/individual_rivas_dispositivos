@@ -61,7 +61,7 @@ class SearchFragment : Fragment() {
         return when {
             binding.rbMovies.isChecked -> "movie"
             binding.rbTVShows.isChecked -> "tv"
-            binding.rbPeople.isChecked -> "person"
+           // binding.rbPeople.isChecked -> "person"
             else -> "movie" // Default filter if none is selected
         }
     }

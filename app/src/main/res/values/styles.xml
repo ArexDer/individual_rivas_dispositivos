@@ -1,0 +1,14 @@
+<resources>
+    <!-- Estilo para ImageView redondeada en las esquinas -->
+    <style name="RoundedCornersImageView">
+        <item name="shapeAppearance">@style/RoundedCorners</item>
+    </style>
+
+    <!-- Definición de las esquinas redondeadas -->
+    <style name="RoundedCorners" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item> <!-- Ajusta el tamaño según tus necesidades -->
+        <item name="strokeColor">@color/black2</item> <!-- Color del borde -->
+        <item name="strokeWidth">2dp</item> <!-- Ancho del borde -->
+    </style>
+</resources>

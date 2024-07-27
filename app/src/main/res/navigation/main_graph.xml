@@ -12,13 +12,14 @@
         tools:layout="@layout/fragment_movies" >
         <action
             android:id="@+id/action_moviesFragment2_to_profileSettingsFragment2"
-            app:destination="@id/profileSettingsFragment2" />
+            app:destination="@id/profileSettingsFragment2"
+            app:enterAnim="@anim/car_ui_app_styled_view_enter_anim"
+            app:exitAnim="@anim/car_ui_app_styled_view_exit_anim"
+            app:popEnterAnim="@anim/car_ui_app_styled_view_enter_anim"
+            app:popExitAnim="@anim/nav_default_enter_anim" />
         <action
             android:id="@+id/action_moviesFragment2_to_searchFragment"
-            app:destination="@id/searchFragment" />
-        <action
-            android:id="@+id/entrance"
-            app:destination="@id/profileSettingsFragment2"
+            app:destination="@id/searchFragment"
             app:enterAnim="@anim/car_ui_app_styled_view_enter_anim"
             app:exitAnim="@anim/car_ui_app_styled_view_exit_anim"
             app:popEnterAnim="@anim/car_ui_app_styled_view_enter_anim"
@@ -31,7 +32,11 @@
         tools:layout="@layout/fragment_profile_settings" >
         <action
             android:id="@+id/action_profileSettingsFragment2_to_moviesFragment2"
-            app:destination="@id/moviesFragment2" />
+            app:destination="@id/moviesFragment2"
+            app:enterAnim="@anim/car_ui_app_styled_view_enter_anim"
+            app:exitAnim="@anim/car_ui_app_styled_view_exit_anim"
+            app:popEnterAnim="@anim/car_ui_app_styled_view_enter_anim"
+            app:popExitAnim="@anim/nav_default_enter_anim" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -40,6 +45,10 @@
         tools:layout="@layout/fragment_search" >
         <action
             android:id="@+id/action_searchFragment_to_moviesFragment2"
-            app:destination="@id/moviesFragment2" />
+            app:destination="@id/moviesFragment2"
+            app:enterAnim="@anim/car_ui_app_styled_view_enter_anim"
+            app:exitAnim="@anim/car_ui_app_styled_view_exit_anim"
+            app:popEnterAnim="@anim/car_ui_app_styled_view_enter_anim"
+            app:popExitAnim="@anim/nav_default_enter_anim" />
     </fragment>
 </navigation>

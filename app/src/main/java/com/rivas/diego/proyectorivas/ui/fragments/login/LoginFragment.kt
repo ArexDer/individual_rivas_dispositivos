@@ -5,8 +5,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.provider.Settings
-import android.text.InputType
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +24,7 @@ import com.rivas.diego.proyectorivas.ui.activities.MainActivity
 import com.rivas.diego.proyectorivas.ui.core.ManageUIStates
 import com.rivas.diego.proyectorivas.ui.core.UIStates
 import com.rivas.diego.proyectorivas.ui.viewmodels.login.LoginFragmentVM
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.concurrent.Executor
 
@@ -97,11 +96,14 @@ class LoginFragment : Fragment() {
             val rememberMe = binding.recuerdame.isChecked
 
             if (email.isNotEmpty() && password.isNotEmpty()) {
-                loginFragmentVM.authWhitFireBase(email, password, auth, requireActivity())
-                if (rememberMe) {
-                    saveCredentials(email, password)
-                } else {
-                    clearCredentials()
+                lifecycleScope.launch {
+                    loginFragmentVM.authWhitFireBase(email, password, auth, requireActivity())
+                    delay(5000) 
+                    if (rememberMe) {
+                        saveCredentials(email, password)
+                    } else {
+                        clearCredentials()
+                    }
                 }
             } else {
                 Toast.makeText(requireContext(), "Please enter email and password", Toast.LENGTH_SHORT).show()

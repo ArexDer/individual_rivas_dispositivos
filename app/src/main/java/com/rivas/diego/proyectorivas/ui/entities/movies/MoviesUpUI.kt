@@ -7,6 +7,7 @@ class MoviesUpUI  (
     val title: String,
     val popularity: Double,
     val poster_path: String,
-    val overview: String
+    val overview: String,
+    val video: Boolean,
 
     )

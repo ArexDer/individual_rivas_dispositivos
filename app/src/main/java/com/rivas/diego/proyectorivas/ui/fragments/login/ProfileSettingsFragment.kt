@@ -64,12 +64,7 @@ class ProfileSettingsFragment : Fragment() {
                     binding.etAge.setText(document.getString("age"))
                     binding.etNickname.setText(document.getString("nickname"))
 
-                    val interests = document.get("interests") as? List<String> ?: listOf()
-                    binding.cbHorror.isChecked = "Horror" in interests
-                    binding.cbAction.isChecked = "Action" in interests
-                    binding.cbAdventure.isChecked = "Adventure" in interests
-                    binding.cbNovels.isChecked = "Novels" in interests
-                    binding.cbDrama.isChecked = "Drama" in interests
+
                 }
             }
             .addOnFailureListener { e ->
@@ -81,11 +76,7 @@ class ProfileSettingsFragment : Fragment() {
     private fun saveUserData() {
         val user = auth.currentUser ?: return
         val interests = mutableListOf<String>()
-        if (binding.cbHorror.isChecked) interests.add("Horror")
-        if (binding.cbAction.isChecked) interests.add("Action")
-        if (binding.cbAdventure.isChecked) interests.add("Adventure")
-        if (binding.cbNovels.isChecked) interests.add("Novels")
-        if (binding.cbDrama.isChecked) interests.add("Drama")
+
 
         val userData = mapOf(
             "firstName" to binding.etFirstName.text.toString().trim(),

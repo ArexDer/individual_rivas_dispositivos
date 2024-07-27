@@ -64,8 +64,7 @@ interface MoviesEndPoints {
 //        @Query("language") language: String = "es-MX",
 //        @Query("page") page: Int = 1
 //    ): Response<PeopleAPI> // Asegúrate de tener esta clase para resultados de búsqueda de personas
+
+
 }
 
-//IMPORTANTE
-
-//REVISSAR PORQUE DONDE ESTA "Resposne" era Call y la funcion no tiene suspend

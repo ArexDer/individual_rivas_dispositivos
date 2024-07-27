@@ -4,29 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="130dp"
     android:layout_height="wrap_content"
-    android:background="@drawable/login_background">
+    >
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/my_primary"
-        android:alpha="0.9">
+        android:background="@color/black"
+        android:alpha="0.8">
 
-        <ImageView
-
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imageView"
-            android:layout_width="128dp"
-            android:layout_height="157dp"
-            android:layout_marginBottom="10sp"
+            style="@style/RoundedCornersImageView"
+            android:layout_width="120dp"
+            android:layout_height="165dp"
             android:layout_marginTop="10sp"
-            android:layout_marginStart="5sp"
             android:layout_marginEnd="5sp"
+            android:layout_marginBottom="10sp"
             android:contentDescription="@string/app_name"
+            android:scaleType="centerCrop"
             android:src="@drawable/ic_launcher_foreground"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
-
+            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

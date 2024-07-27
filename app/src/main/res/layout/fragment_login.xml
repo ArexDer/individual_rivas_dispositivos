@@ -38,14 +38,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="28dp">
+            android:layout_marginBottom="15dp"
+            android:padding="20dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Bienvenido"
                 android:textColor="@color/my_primary"
-                android:textSize="32sp"
+                android:textSize="30sp"
                 android:textStyle="bold"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -87,6 +88,12 @@
                     android:inputType="textPassword"
                     android:hint="Contraseña"
                     android:alpha="0.6"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.textfield.TextInputLayout>
 
             <RelativeLayout
@@ -139,6 +146,7 @@
                 android:id="@+id/btnSigIn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="14sp"
                 android:text="No tienes cuenta Registrate"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
@@ -146,17 +154,13 @@
                 android:layout_marginBottom="15dp"
                 android:textColor="@color/purple"/>
 
+
         </LinearLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <include
-                android:id="@+id/lytLoading"
-                layout="@layout/loading_layout"
-                android:visibility="gone" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.cardview.widget.CardView>
+    <include
+        android:id="@+id/lytLoading"
+        layout="@layout/loading_layout"
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -150,16 +150,30 @@ class MoviesFragment : Fragment() {
     }
 
     private fun showMovieInfoDialog(movie: MoviesInfoUI) {
+        // Crear una nueva instancia del binding para evitar la reutilización
         val dialogBinding = DialogMovieInfoBinding.inflate(LayoutInflater.from(requireContext()))
 
+        // Configurar el contenido del diálogo
         dialogBinding.ivBackground.load("https://image.tmdb.org/t/p/w500" + movie.poster_path) {
             crossfade(true)
         }
         dialogBinding.tvTitle.text = movie.title
         dialogBinding.tvOriginalLanguage.text = movie.original_language
         dialogBinding.tvPopularity.text = movie.popularity.toString()
-        dialogBinding.tvSynopsis.text = movie.overview  // Agregar la sinopsis
+        dialogBinding.tvSynopsis.text = movie.overview
 
+        // Configurar el VideoView si hay un video
+        if (movie.video) {
+            // Aquí deberías obtener la URL real del video
+            val videoUrl = "https://path.to/video.mp4" // Reemplaza con la URL real del video
+            dialogBinding.videoView.setVideoPath(videoUrl)
+            dialogBinding.videoView.setMediaController(android.widget.MediaController(requireContext()))
+            dialogBinding.videoView.visibility = View.VISIBLE
+        } else {
+            dialogBinding.videoView.visibility = View.GONE
+        }
+
+        // Crear y mostrar el AlertDialog
         MaterialAlertDialogBuilder(requireContext())
             .setView(dialogBinding.root)
             .setPositiveButton("OK", null)
@@ -167,6 +181,7 @@ class MoviesFragment : Fragment() {
     }
 
     private fun showMovieUpDialog(movieUp: MoviesUpUI) {
+        // Crear una nueva instancia del binding para evitar la reutilización
         val dialogBinding = DialogMovieInfoBinding.inflate(LayoutInflater.from(requireContext()))
 
         dialogBinding.ivBackground.load("https://image.tmdb.org/t/p/w500" + movieUp.poster_path) {
@@ -177,6 +192,18 @@ class MoviesFragment : Fragment() {
         dialogBinding.tvPopularity.text = movieUp.popularity.toString()
         dialogBinding.tvSynopsis.text = movieUp.overview
 
+        // Configurar el VideoView si hay un video
+        if (movieUp.video) {
+            // Aquí deberías obtener la URL real del video
+            val videoUrl = "https://path.to/video.mp4" // Reemplaza con la URL real del video
+            dialogBinding.videoView.setVideoPath(videoUrl)
+            dialogBinding.videoView.setMediaController(android.widget.MediaController(requireContext()))
+            dialogBinding.videoView.visibility = View.VISIBLE
+        } else {
+            dialogBinding.videoView.visibility = View.GONE
+        }
+
+        // Crear y mostrar el AlertDialog
         MaterialAlertDialogBuilder(requireContext())
             .setView(dialogBinding.root)
             .setPositiveButton("OK", null)
@@ -184,6 +211,7 @@ class MoviesFragment : Fragment() {
     }
 
     private fun showTVSeriesDialog(tvSeries: TVSeriesUI) {
+        // Crear una nueva instancia del binding para evitar la reutilización
         val dialogBinding = DialogMovieInfoBinding.inflate(LayoutInflater.from(requireContext()))
 
         dialogBinding.ivBackground.load("https://image.tmdb.org/t/p/w500" + tvSeries.poster_path) {
@@ -193,11 +221,12 @@ class MoviesFragment : Fragment() {
         dialogBinding.tvOriginalLanguage.text = tvSeries.original_name
         dialogBinding.tvPopularity.text = tvSeries.popularity.toString()
         dialogBinding.tvSynopsis.text = tvSeries.overview
-        //dialogBinding.tvSynopsis.text = tvSeries.vote_average.toString() + " (Votes: " + tvSeries.vote_count + ")"
 
+        // Crear y mostrar el AlertDialog
         MaterialAlertDialogBuilder(requireContext())
             .setView(dialogBinding.root)
             .setPositiveButton("OK", null)
             .show()
     }
+
 }
